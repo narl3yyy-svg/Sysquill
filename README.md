@@ -62,6 +62,10 @@ Open a terminal (Konsole) and run these one at a time.
    sudo apt install ./build/sysquill_0.1.0_amd64.deb
    ```
 
+   apt may end with *"Download is performed unsandboxed as root … Permission denied"*.
+   That is only a notice: apt's download user can't read your home folder, so it read
+   the file as root instead. The install itself has succeeded.
+
 Sysquill now appears in the application launcher under **System → Sysquill**
 (or search for "Sysquill" or "task manager"). You can also start it from a terminal with `sysquill`.
 

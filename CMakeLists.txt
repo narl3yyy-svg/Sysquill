@@ -72,6 +72,15 @@ qt_add_qml_module(sysquill
     RESOURCES
         data/${APP_ID}.svg)
 
+# The QML import scan only exists to link QML plugins into static Qt builds.
+# With a shared Qt (every Linux distribution) the plugins load at run time,
+# and distributions don't export the plugin CMake targets by default, so the
+# scan just prints one "plugin will not be linked" warning per QML module.
+get_target_property(_qt_core_type Qt6::Core TYPE)
+if(_qt_core_type STREQUAL "SHARED_LIBRARY")
+    set_target_properties(sysquill PROPERTIES QT_QML_MODULE_NO_IMPORT_SCAN TRUE)
+endif()
+
 target_compile_definitions(sysquill PRIVATE
     SYSQUILL_VERSION="${PROJECT_VERSION}"
     SYSQUILL_APP_ID="${APP_ID}"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.narl3yyy_svg.Sysquill</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Sysquill</name>
+  <summary>Live system monitor for KDE Plasma</summary>
+  <description>
+    <p>Sysquill shows what your computer is doing right now: CPU per thread with clocks and temperature,
+    memory and swap, every mounted drive with free space, throughput and the processes using it,
+    network interfaces, Intel GPU engines, temperature sensors, and a searchable process list
+    that can end processes.</p>
+  </description>
+  <launchable type="desktop-id">io.github.narl3yyy_svg.Sysquill.desktop</launchable>
+  <url type="homepage">https://github.com/narl3yyy-svg/Sysquill</url>
+  <url type="bugtracker">https://github.com/narl3yyy-svg/Sysquill/issues</url>
+  <categories><category>System</category><category>Monitor</category></categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-11-10"/>
+  </releases>
+</component>

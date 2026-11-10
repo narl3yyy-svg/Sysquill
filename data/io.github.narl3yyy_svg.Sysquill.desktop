@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Sysquill
+GenericName=System Monitor
+Comment=See CPU, memory, disks, network, GPU and processes live
+Exec=sysquill
+Icon=io.github.narl3yyy_svg.Sysquill
+Terminal=false
+Categories=Qt;KDE;System;Monitor;
+Keywords=task manager;system monitor;process;cpu;memory;ram;disk;drive;network;gpu;temperature;
+StartupNotify=true
+StartupWMClass=sysquill

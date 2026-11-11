@@ -7,7 +7,7 @@
 **A fast, modern system monitor for Linux, built for KDE Plasma.**
 
 [![Build](https://github.com/narl3yyy-svg/Sysquill/actions/workflows/build.yml/badge.svg)](https://github.com/narl3yyy-svg/Sysquill/actions/workflows/build.yml)
-[![Release](https://img.shields.io/github/v/release/narl3yyy-svg/Sysquill?label=release)](https://github.com/narl3yyy-svg/Sysquill/releases/latest)
+[![Release](https://img.shields.io/github/v/release/narl3yyy-svg/Sysquill?label=release&cacheSeconds=3600)](https://github.com/narl3yyy-svg/Sysquill/releases/latest)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
 ![Qt 6](https://img.shields.io/badge/Qt-6-41cd52?logo=qt&logoColor=white)
 
@@ -24,7 +24,7 @@ reads `/proc` and `/sys` directly, with no background daemon and no extra tools.
 
 ## Features
 
-| | |
+| Page | What it shows |
 |---|---|
 | **Overview** | CPU, memory, GPU and network at a glance, free space on every drive, the busiest processes, and host, OS, kernel and uptime. |
 | **Processes** | Sortable, searchable table with CPU, memory, disk read/write, GPU, threads, state and full command line. End or force-kill from the toolbar, the context menu or the <kbd>Delete</kbd> key. |

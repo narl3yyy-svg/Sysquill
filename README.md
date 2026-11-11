@@ -1,132 +1,144 @@
+<div align="center">
+
+<img src="data/io.github.narl3yyy_svg.Sysquill.svg" alt="Sysquill" width="128" height="128">
+
 # Sysquill
 
-A modern, live system monitor ("task manager") for Linux, made for KDE Plasma.
-It is a native Qt 6 / QML app, so it uses your Plasma theme, colours, fonts and
-dark mode automatically.
+**A fast, modern system monitor for Linux, built for KDE Plasma.**
 
-Everything updates live (every second by default; 0.5 s, 2 s and 5 s are one click away).
+[![Build](https://github.com/narl3yyy-svg/Sysquill/actions/workflows/build.yml/badge.svg)](https://github.com/narl3yyy-svg/Sysquill/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/narl3yyy-svg/Sysquill?label=release)](https://github.com/narl3yyy-svg/Sysquill/releases/latest)
+[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
+![Qt 6](https://img.shields.io/badge/Qt-6-41cd52?logo=qt&logoColor=white)
+
+[Features](#features) · [Install](#install) · [Usage](#usage) · [How it works](#how-it-works) · [Building](#building-from-source)
+
+</div>
+
+---
+
+Sysquill shows everything your machine is doing in one live view: CPU, memory, every
+drive, network, GPU, temperatures and processes. It is a native Qt 6 / QML application,
+so it follows your Plasma theme, accent colour, fonts and dark mode automatically, and it
+reads `/proc` and `/sys` directly, with no background daemon and no extra tools.
 
 ## Features
 
-| Page | What you see |
+| | |
 |---|---|
-| **Overview** | CPU, memory, GPU and network at a glance, every drive's free space, the busiest processes, host / OS / kernel / uptime |
-| **Processes** | Sortable, searchable table: name, PID, user, CPU %, memory, disk read/s, disk write/s, GPU %, threads, state, full command line. Busy cells are tinted. **End process** (polite) and **Force kill**, from the buttons, a right-click menu or the Delete key |
-| **CPU** | Total usage graph, per-thread graphs with current clock, average and max speed, package temperature, package power (when unlocked), load average, process/thread count |
-| **Memory** | Usage graph, in-use / cache / free bar, available, cached, buffers, shared, dirty; swap usage |
-| **Disks** | Every mounted drive: label, mount points, device and parent disk, file system, UUID, model, HDD/SSD, used / free / size bar, live read and write throughput with graph, active time %, and **which processes have files open on that drive** |
-| **Network** | Every interface: live download/upload graph, totals, link speed, state, MAC and IP addresses (virtual Docker/bridge/VPN interfaces can be shown with one tick) |
-| **GPU** | Intel (i915 and xe), AMD and other kernel-driver GPUs: busy %, clock, max clock, per-engine load (**Render/3D, Video decode/encode, Video enhance, Copy**), which programs use the GPU, and iGPU power when unlocked. Hardware video decoding and encoding (VA-API, Quick Sync) shows up under the *Video* engine |
-| **Sensors** | All temperature sensors (CPU cores and package, NVMe, chipset, motherboard, Wi-Fi, and hard drives with `drivetemp`) |
+| **Overview** | CPU, memory, GPU and network at a glance, free space on every drive, the busiest processes, and host, OS, kernel and uptime. |
+| **Processes** | Sortable, searchable table with CPU, memory, disk read/write, GPU, threads, state and full command line. End or force-kill from the toolbar, the context menu or the <kbd>Delete</kbd> key. |
+| **CPU** | Total and per-thread usage graphs, clock speeds, package temperature and power, load average, and process and thread counts. |
+| **Memory** | Usage history, an in-use / cache / free breakdown, and swap. |
+| **Disks** | Every mounted drive with label, UUID, file system, model, HDD/SSD type, capacity, live throughput, active time, and **which processes have files open on it**. |
+| **Network** | Per-interface traffic graphs, totals, link speed, MAC and IP addresses. Virtual interfaces (Docker, bridges, VPNs) are hidden unless you ask for them. |
+| **GPU** | Intel (i915 / xe), AMD and other DRM GPUs: busy %, clocks, per-engine load (3D, video decode/encode, video enhance, copy), per-process GPU use and iGPU power. |
+| **Sensors** | All hardware temperatures: CPU, NVMe, chipset, motherboard, Wi-Fi, and hard drives via `drivetemp`. |
 
-### "Unlock all processes"
+Refresh every 0.5, 1, 2 or 5 seconds, or pause at any time.
 
-Linux only lets a normal user see disk and GPU activity of their **own** processes.
-System services (web and media servers, Docker, Samba and so on) run as other users, so for them those
-columns show "–" at first.
+### Unlock all processes
 
-Click **Unlock all processes** in the top bar and enter your password once. A tiny
-helper (`/usr/libexec/sysquill/sysquill-helper`) then runs as root for as long as
-Sysquill is open. After that you see everyone's disk I/O, open files per drive, GPU use,
-and CPU / iGPU power, and you can end processes that belong to other users. The helper only
-reads `/proc` and `/sys` and can only send *end / kill / stop / continue* signals. It quits
-when Sysquill closes. The password prompt is the normal KDE (polkit) dialog.
+Linux only lets a normal user see disk and GPU activity of their **own** processes, so
+system services show "–" in those columns at first. Click **Unlock all processes** and
+authenticate once through the standard polkit dialog. A small helper then runs as root
+until Sysquill closes, and you get:
 
-Ending another user's process without unlocking first will also bring up the password prompt.
+- disk I/O, open files and GPU use for every process
+- CPU and iGPU power readings
+- the ability to end processes owned by other users
 
-## Install on Kubuntu / Ubuntu (26.04 or newer)
+The helper (`/usr/libexec/sysquill/sysquill-helper`) only reads `/proc` and `/sys` and can
+only send end, kill, stop and continue signals.
 
-Open a terminal (Konsole) and run these one at a time.
+## Install
 
-1. Install the tools needed to build it (this asks for your password):
+Sysquill needs **Kubuntu / Ubuntu 26.04 or newer** (Qt 6.5+).
 
-   ```bash
-   sudo apt install git build-essential cmake dpkg-dev file qt6-base-dev qt6-base-dev-tools qt6-declarative-dev qt6-declarative-dev-tools qml6-module-qtquick qml6-module-qtquick-controls qml6-module-qtquick-layouts qml6-module-qtquick-templates qml6-module-qtquick-window qml6-module-qtqml-workerscript
-   ```
+### From a release (recommended)
 
-2. Download the source:
-
-   ```bash
-   git clone https://github.com/narl3yyy-svg/Sysquill.git
-   ```
-
-3. Build the package (takes a minute or two):
-
-   ```bash
-   cd Sysquill && ./scripts/build-deb.sh
-   ```
-
-4. Install it:
-
-   ```bash
-   sudo apt install ./build/sysquill_0.1.0_amd64.deb
-   ```
-
-   apt may end with *"Download is performed unsandboxed as root … Permission denied"*.
-   That is only a notice: apt's download user can't read your home folder, so it read
-   the file as root instead. The install itself has succeeded.
-
-Sysquill now appears in the application launcher under **System → Sysquill**
-(or search for "Sysquill" or "task manager"). You can also start it from a terminal with `sysquill`.
-
-### Updating later
+Download the `.deb` from the [latest release](https://github.com/narl3yyy-svg/Sysquill/releases/latest) and install it:
 
 ```bash
-cd ~/Sysquill && git pull && ./scripts/build-deb.sh && sudo apt install ./build/sysquill_*.deb
+sudo apt install ./sysquill_*_amd64.deb
 ```
 
-### Uninstalling
+apt installs the Qt packages Sysquill needs automatically.
+
+> [!NOTE]
+> If apt ends with *"Download is performed unsandboxed as root … Permission denied"*, the
+> install still succeeded. apt's download user just can't read your home folder.
+
+### From source
+
+```bash
+git clone https://github.com/narl3yyy-svg/Sysquill.git
+cd Sysquill
+./scripts/build-deb.sh --install-deps
+sudo apt install ./build/sysquill_*_amd64.deb
+```
+
+`--install-deps` installs the build tools with apt first; leave it out if you already have them.
+
+**Update:**
+
+```bash
+cd ~/Sysquill && git pull && ./scripts/build-deb.sh && sudo apt install ./build/sysquill_*_amd64.deb
+```
+
+**Uninstall:**
 
 ```bash
 sudo apt remove sysquill
 ```
 
-### Ready-made .deb
+## Usage
 
-Every push to GitHub builds the package automatically (Actions tab → latest
-*Build .deb* run → *sysquill-deb* artifact). Tagged releases (`v0.1.0`, …) attach the
-`.deb` to the release page, so you can skip the build steps and run just step 4.
+Open **Sysquill** from the application launcher (search "Sysquill" or "task manager"), or
+from a terminal:
 
-## Command-line options
-
-```text
-sysquill --page disks        open on a page (overview, processes, cpu, memory, disks, network, gpu, sensors)
-sysquill --unlock            ask for administrator access right away
-sysquill --dump              print everything it measures as JSON and quit (handy for bug reports)
+```bash
+sysquill
 ```
 
-## Tips
+| Option | Description |
+|---|---|
+| `--page <name>` | Open on a page: `overview`, `processes`, `cpu`, `memory`, `disks`, `network`, `gpu`, `sensors` |
+| `--unlock` | Ask for administrator access at startup |
+| `--dump` | Print every measurement as JSON and exit (useful for bug reports) |
+| `--help` | Show all options |
 
-* **Hard-drive temperatures**: load the kernel's drive temperature driver once with
-  `sudo modprobe drivetemp`, and make it permanent with
-  `echo drivetemp | sudo tee /etc/modules-load.d/drivetemp.conf`.
-* **CPU %** in the process list is a share of the whole machine (like Windows Task
-  Manager), so 100 % means every core is busy.
-* **Disk read/write per process** counts all drives together. The *Disks* page tells you
-  which drive a process has files open on.
+### Tips
+
+- **Hard-drive temperatures** need the `drivetemp` kernel module:
+  ```bash
+  echo drivetemp | sudo tee /etc/modules-load.d/drivetemp.conf && sudo modprobe drivetemp
+  ```
+- **CPU %** in the process list is a share of the whole machine, so 100 % means every core is busy.
+- **Per-process disk I/O** counts all drives together. The *Disks* page shows which drive a process is using.
 
 ## How it works
 
-* C++17 + Qt 6 (Qt Quick / QML), built with CMake, packaged with CPack.
-* All measuring happens on a background thread that reads `/proc` and `/sys` directly:
-  `/proc/stat`, `/proc/meminfo`, `/proc/<pid>/{stat,io,fd,fdinfo}`, `/proc/diskstats`,
-  `/proc/self/mountinfo`, `/proc/net/dev`, `/sys/class/hwmon`, `/sys/class/drm`,
-  `/sys/class/powercap`.
-* GPU engine load is computed from the kernel's per-client DRM statistics in
-  `/proc/<pid>/fdinfo` (the same source `nvtop` and `gputop` use), so no extra
-  tools or permissions are needed for your own programs.
-* The UI uses the KDE desktop style (`qml6-module-org-kde-desktop`) when it is installed,
-  which it is on every Plasma desktop, and falls back to Qt's Fusion style elsewhere.
+- **C++17 and Qt 6 Quick**, built with CMake and packaged as a `.deb` with CPack.
+- **A background sampler thread** reads the kernel directly: `/proc/stat`, `/proc/meminfo`,
+  `/proc/<pid>/{stat,io,fd,fdinfo}`, `/proc/diskstats`, `/proc/self/mountinfo`,
+  `/proc/net/dev`, and `/sys/class/{hwmon,drm,powercap}`.
+- **GPU engine load** comes from the kernel's per-client DRM statistics in
+  `/proc/<pid>/fdinfo`, the same source `nvtop` and `gputop` use.
+- **Native look:** Sysquill uses the KDE desktop style when available and falls back to
+  Qt's Fusion style elsewhere.
 
-## Building by hand (developers)
+## Building from source
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 cmake --build build -j"$(nproc)"
-./build/sysquill               # run without installing
-sudo cmake --install build     # or install without a package
+./build/sysquill              # run without installing
 ```
+
+Every push is built by GitHub Actions, and tagged versions (`v*`) publish the `.deb` to
+[Releases](https://github.com/narl3yyy-svg/Sysquill/releases).
 
 ## License
 
-GNU General Public License v3.0 or later, see [LICENSE](LICENSE).
+Sysquill is free software, licensed under the [GNU General Public License v3.0 or later](LICENSE).
